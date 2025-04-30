@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>台灣隨機火車站</title>
+    <style>
+        body {
+            background: radial-gradient(ellipse at center, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            padding-top: 100px;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00f7ff;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(45deg, #00f7ff, #007e9d);
+            color: #000;
+            cursor: pointer;
+            box-shadow: 0 0 20px #00f7ff;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px #00f7ff;
+        }
+        #card {
+            margin: 30px auto 0;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00f7ff;
+            padding: 30px;
+            border-radius: 15px;
+            width: 300px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            box-shadow: 0 0 20px #00f7ff88;
+        }
+        #card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <h1>台灣火車站抽卡</h1>
+    <button onclick="getRandomStation()">抽一張！</button>
+    <div id="card"></div>
+
+    <script>
+        function getRandomStation() {
+            fetch('/random_station')
+                .then(response => response.json())
+                .then(data => {
+                    const resultDiv = document.getElementById('card');
+                    resultDiv.innerHTML = `
+                        <h2>${data.station_name}</h2>
+                        <p>${data.city}</p>
+                        <p>${data.address}</p>
+                    `;
+                    resultDiv.classList.remove('show');
+                    setTimeout(() => resultDiv.classList.add('show'), 50);
+                });
+        }
+    </script>
+</body>
+</html>
